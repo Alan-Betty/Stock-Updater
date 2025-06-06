@@ -178,7 +178,7 @@ tbody tr:hover {
     color: #fff;
 }
 
-/* Hide number input spinners for normal browser that was developed by sane people */
+/* Hide number input spinners for normal browser that was developed by sane people (Opera Chrome Edge) */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -244,6 +244,7 @@ input[type="number"] {
     border: none;
     font-size: 15px;
     background-color: var(--bg1);
+    color: #fff;
 }
 
 .add-item-form button {
