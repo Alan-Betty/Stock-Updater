@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="mainContent">
+    <section>
+    <!-- !The table -->
+    <div class="container">
+        <h1>Bill Roll Stock</h1>
+        <!-- Add Item Form -->
+        <form id="addItemForm" class="add-item-form">
+            <input type="text" id="newType" placeholder="Type (e.g. 80mm x 80mm)" required>
+            <input type="number" id="newQuantity" placeholder="Quantity" min="0" required>
+            <button type="submit">Add Item</button>
+        </form>
+        <table id="stockTable">
+            <thead>
+                <tr>
+                    <th>Width</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    </section>
+    <section>
+        <div class="container">
+            <h1>Pricing</h1>
+            <table id="pricingTable">
+                <thead>
+                    <tr>
+                        <th>Width</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Pricing rows will be inserted here by JS -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    </div>
+
+    <!-- !Modal for updating stock -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2 class="modalText">Update Stock</h2>
+            <form id="updateForm">
+                <div class="input-row">
+                    <label for="updateQuantity">Quantity:</label>
+                    <input type="number" id="updateQuantity" min="0" required>
+                </div>
+                <input type="hidden" id="updateIndex">
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
