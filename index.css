@@ -872,7 +872,7 @@ input[type="date"] {
     width: 100vw;
     z-index: 100;
     background: rgba(20, 18, 34, 0.92);
-    box-shadow: 0 2px 24px #00eaff33, 0 1.5px 0 #232946;
+    box-shadow: 0 2px 24px #00eaff1c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -880,7 +880,6 @@ input[type="date"] {
     height: 64px;
     overflow: visible;
     backdrop-filter: blur(8px) saturate(1.2);
-    border-bottom: 1.5px solid #232946;
 }
 
 .futuristic-navbar-inner {
@@ -902,7 +901,7 @@ input[type="date"] {
     display: flex;
     align-items: center;
     font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #00eaff;
     letter-spacing: 2px;
@@ -912,7 +911,7 @@ input[type="date"] {
     margin-left: 24px;
 }
 .navbar-logo span {
-    color: #ffe082;
+    color: #ffbf00;
     margin-left: 2px;
     text-shadow: 0 0 8px #ffe08299;
 }
@@ -953,7 +952,7 @@ input[type="date"] {
     left: 0;
     height: 3px;
     width: 40px;
-    background: linear-gradient(90deg, #00eaff 0%, #ffe082 100%);
+    background: linear-gradient(90deg, #00eaff 0%, #ffae00 100%);
     border-radius: 2px;
     transition: transform 0.38s cubic-bezier(.68,-0.55,.27,1.55), width 0.32s cubic-bezier(.68,-0.55,.27,1.55);
     z-index: 3;
@@ -1049,5 +1048,5 @@ input[type="date"]::placeholder {
 
 
 section.invis {
-    min-height: 16vh;
+    min-height: 21.5vh;
 }
