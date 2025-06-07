@@ -15,6 +15,7 @@ const db = firebase.database();
 let stock = [];
 let prices = {};
 let buyers = [];
+let accounts = [];
 
 function fetchData() {
     db.ref("stock").on("value", snapshot => {
@@ -22,6 +23,7 @@ function fetchData() {
         renderTable();
         renderPricingTable();
         renderBillTypeOptions();
+        renderAccountProductOptions();
     });
     db.ref("prices").on("value", snapshot => {
         prices = snapshot.val() || {};
@@ -30,6 +32,11 @@ function fetchData() {
     db.ref("buyers").on("value", snapshot => {
         buyers = snapshot.val() || [];
         renderBuyersTable();
+        renderAccountShopOptions();
+    });
+    db.ref("accounts").on("value", snapshot => {
+        accounts = snapshot.val() || [];
+        renderAccountsList();
     });
 }
 
@@ -41,6 +48,9 @@ function savePrices() {
 }
 function saveBuyers() {
     db.ref("buyers").set(buyers);
+}
+function saveAccounts() {
+    db.ref("accounts").set(accounts);
 }
 
 function renderTable() {
@@ -100,6 +110,57 @@ function renderBuyersTable() {
     });
 }
 
+function renderAccountShopOptions() {
+    const select = document.getElementById("accountShop");
+    if (!select) return;
+    select.innerHTML = '<option value="" disabled selected>Select Shop</option>';
+    buyers.forEach(buyer => {
+        const option = document.createElement("option");
+        option.value = buyer.shopName;
+        option.textContent = buyer.shopName;
+        select.appendChild(option);
+    });
+}
+
+function renderAccountProductOptions() {
+    const select = document.getElementById("accountProduct");
+    if (!select) return;
+    select.innerHTML = '<option value="" disabled selected>Select Product</option>';
+    stock.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.type;
+        option.textContent = item.type;
+        select.appendChild(option);
+    });
+}
+
+function renderAccountsList() {
+    const list = document.getElementById("accountsList");
+    if (!list) return;
+    list.innerHTML = "";
+    if (accounts.length === 0) {
+        list.innerHTML = `<div class="account-empty">No account entries yet.</div>`;
+        return;
+    }
+    accounts.slice().reverse().forEach(acc => {
+        const card = document.createElement("div");
+        card.className = "account-card";
+        card.innerHTML = `
+            <div class="account-card-header">
+                <span class="account-shop">${acc.shop}</span>
+                <span class="account-date">${formatDateDMY(acc.date)}</span>
+            </div>
+            <div class="account-card-body">
+                <div class="account-product">${acc.product}</div>
+                <div class="account-qty">Qty: <b>${acc.qty}</b></div>
+                <div class="account-amount">Earned: <b>₹${acc.amount}</b></div>
+                <div class="account-payment">Payment: <b>${acc.payment || "—"}</b></div>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+}
+
 function openModal(idx) {
     document.getElementById("modal").style.display = "block";
     document.getElementById("mainContent").classList.add("blur");
@@ -126,6 +187,16 @@ function openPriceModal(type) {
 function closeModal() {
     document.getElementById("modal").style.display = "none";
     document.getElementById("mainContent").classList.remove("blur");
+}
+
+function formatDateDMY(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -201,6 +272,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 buyers.push({ shopName, billType });
                 saveBuyers();
                 buyerForm.reset();
+            }
+        };
+    }
+
+    // Accounts form
+    const accountForm = document.getElementById("accountForm");
+    if (accountForm) {
+        accountForm.onsubmit = function(e) {
+            e.preventDefault();
+            const shop = document.getElementById("accountShop").value;
+            const product = document.getElementById("accountProduct").value;
+            const qty = parseInt(document.getElementById("accountQty").value, 10);
+            const amount = parseFloat(document.getElementById("accountAmount").value);
+            const dateRaw = document.getElementById("accountDate").value;
+            const payment = document.getElementById("accountPayment").value;
+            const date = formatDateDMY(dateRaw);
+            if (shop && product && qty > 0 && amount >= 0 && date && payment) {
+                accounts.push({ shop, product, qty, amount, date, payment });
+                saveAccounts();
+                accountForm.reset();
             }
         };
     }
@@ -301,5 +392,56 @@ document.addEventListener("DOMContentLoaded", () => {
                 calcResultDisplayed = false;
             }
         });
+    });
+
+    // --- Navbar active link logic with animated underline ---
+    const navLinks = document.querySelectorAll('.navbar-links a');
+    const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
+    const underline = document.querySelector('.navbar-underline');
+
+    function moveUnderlineTo(link) {
+        if (!link || !underline) return;
+        const rect = link.getBoundingClientRect();
+        const parentRect = link.parentElement.parentElement.getBoundingClientRect();
+        underline.style.width = rect.width + "px";
+        underline.style.transform = `translateX(${rect.left - parentRect.left}px)`;
+    }
+
+    function setActiveNav() {
+        let scrollPos = window.scrollY || window.pageYOffset;
+        let offset = 90; // match scroll-padding-top
+        let activeIdx = 0;
+        for (let i = 0; i < sections.length; i++) {
+            const sec = sections[i];
+            if (sec && sec.offsetTop - offset <= scrollPos) {
+                activeIdx = i;
+            }
+        }
+        navLinks.forEach((link, idx) => {
+            if (idx === activeIdx) {
+                link.classList.add('active');
+                moveUnderlineTo(link);
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    setActiveNav();
+    window.addEventListener('scroll', setActiveNav);
+
+    // Also set active on click for instant feedback
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            moveUnderlineTo(this);
+        });
+    });
+
+    // On resize, reposition underline
+    window.addEventListener('resize', () => {
+        const active = document.querySelector('.navbar-links a.active');
+        if (active) moveUnderlineTo(active);
     });
 });

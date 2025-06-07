@@ -9,8 +9,23 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
+    <!-- Futuristic Navbar -->
+    <nav class="futuristic-navbar">
+        <div class="futuristic-navbar-inner">
+            <div class="navbar-logo">🧾 Stock<span>Flow</span></div>
+            <ul class="navbar-links">
+                <li><a href="#stock">Stock</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#buyers">Buyers</a></li>
+                <li><a href="#accounts">Accounts</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+            </ul>
+            <div class="navbar-underline"></div>
+            <div class="navbar-glow"></div>
+        </div>
+    </nav>
     <div id="mainContent">
-    <section>
+    <section id="stock">
     <!-- !The table -->
     <div class="container">
         <h1>Bill Roll Stock</h1>
@@ -34,7 +49,7 @@
         </table>
     </div>
     </section>
-    <section>
+    <section id="pricing">
         <div class="container">
             <h1>Pricing</h1>
             <table id="pricingTable">
@@ -51,7 +66,7 @@
             </table>
         </div>
     </section>
-    <section>
+    <section id="buyers">
         <div class="container">
             <h1>Buyers Info</h1>
             <form id="buyerForm" class="buyer-form">
@@ -75,7 +90,35 @@
             </table>
         </div>
     </section>
-    <section>
+    <section id="accounts">
+        <div class="container">
+            <h1>Accounts</h1>
+            <form id="accountForm" class="account-form">
+                <select id="accountShop" required>
+                    <option value="" disabled selected>Select Shop</option>
+                    <!-- Populated by JS -->
+                </select>
+                <select id="accountProduct" required>
+                    <option value="" disabled selected>Select Product</option>
+                    <!-- Populated by JS -->
+                </select>
+                <select id="accountPayment" required>
+                    <option value="" disabled selected>Payment Method</option>
+                    <option value="Cash">Cash</option>
+                    <option value="GPay">GPay</option>
+                </select>
+                <input type="number" id="accountQty" placeholder="Quantity" min="1" required>
+                <input type="number" id="accountAmount" placeholder="Amount Earned" min="0" required>
+                <input type="date" id="accountDate" required placeholder="dd/mm/yyyy">
+                <button type="submit">Add Entry</button>
+            </form>
+            <span class="date-format-note">Note: Format is MM/DD/YYYY</span>
+            <div id="accountsList" class="accounts-list">
+                <!-- Account cards will be rendered here -->
+            </div>
+        </div>
+    </section>
+    <section id="calculator">
         <div class="container">
             <h1>Calculator</h1>
             <div class="real-calc">
@@ -104,6 +147,8 @@
             </div>
         </div>
     </section>
+    <section class="invis"></section>
+
     </div>
 
     <!-- !Modal for updating stock -->

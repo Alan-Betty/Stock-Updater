@@ -1,3 +1,6 @@
+/* Import Rajdhani for navbar links */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap');
+
 :root {
     --bg1: #1F1C2C;
     --bg2: #0D0D0D;
@@ -438,6 +441,12 @@ input[type="number"] {
     background: #32244d;
 }
 
+/* Hide the placeholder option from the dropdown list after selection */
+select option[disabled][selected],
+select option[disabled] {
+    display: none !important;
+}
+
 /* Hide the placeholder option after selection */
 .buyer-form select option[disabled][selected] {
     display: none;
@@ -499,7 +508,7 @@ input[type="number"] {
     min-width: 60px;
     font-size: 18px;
     font-weight: bold;
-    color: #ffe082;
+    color: #ffc400;
     margin-left: 10px;
     text-align: left;
 }
@@ -516,7 +525,7 @@ input[type="number"] {
 
 .calc-display {
     background: #232946;
-    color: #ffe082;
+    color: #ffc400;
     font-size: 2.3rem;
     border-radius: 14px;
     padding: 20px 18px 14px 18px;
@@ -596,7 +605,7 @@ input[type="number"] {
 
 /* Smooth transition for all interactive elements */
 button,
-input,
+input,t
 select,
 .add-item-form input,
 .add-item-form button,
@@ -609,7 +618,436 @@ select,
 #pricingTable tbody tr,
 #stockTable tbody tr,
 #buyersTable tbody tr,
-.calc-btn {
+.calc-btn,
+.calc-btn.op {
     /* transition: background 0.25s, color 0.25s, box-shadow 0.25s, border-color 0.25s, transform 0.18s; */
     transition: all 0.25s ease-in-out;
+}
+
+.account-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-form select,
+.account-form input[type="number"],
+.account-form input[type="date"] {
+    padding: 8px;
+    border-radius: 7px;
+    border: none;
+    font-size: 15px;
+    background-color: var(--bg1);
+    color: #fff;
+    min-width: 120px;
+    margin-bottom: 0; /* ensure no extra margin */
+}
+
+.account-form button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.account-form button:hover {
+    background: #1565c0;
+}
+
+.accounts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.account-card {
+    background: linear-gradient(135deg, #241a3a 70%, #2a223a 100%);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #00000030;
+    padding: 18px 22px 14px 22px;
+    min-width: 220px;
+    max-width: 260px;
+    flex: 1 1 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1.5px solid #32244d;
+    transition: box-shadow 0.25s, transform 0.18s;
+    margin-bottom: 8px;
+}
+
+.account-card:hover {
+    box-shadow: 0 6px 24px #00000050;
+    transform: translateY(-4px) scale(1.03);
+}
+
+.account-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.account-shop {
+    font-weight: bold;
+    color: #ffe082;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+}
+
+.account-date {
+    color: #bdbdbd;
+    font-size: 0.98em;
+    font-style: italic;
+}
+
+.account-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.account-product {
+    font-size: 1.08em;
+    color: #90caf9;
+    font-weight: 500;
+}
+
+.account-qty {
+    color: #fff;
+    font-size: 1em;
+}
+
+.account-amount {
+    color: #81c784;
+    font-size: 1.08em;
+    font-weight: bold;
+}
+
+.account-empty {
+    color: #bdbdbd;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 18px 0;
+}
+
+.account-payment {
+    color: #00eaff;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+/* Fix select width and text cutoff */
+select {
+    background-color: var(--bg1) !important;
+    color: #fff !important;
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 34px;
+    border-radius: 7px;
+    font-size: 15px;
+    min-width: 160px;
+    max-width: 220px;
+    width: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Force custom white dropdown arrow for all selects */
+select,
+.account-form select,
+.add-item-form select,
+.buyer-form select,
+.calc-form select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 18px 18px !important;
+}
+
+/* Remove white background for disabled/selected placeholder option */
+select option[disabled][selected],
+select option[disabled]:not(:checked):not(:focus) {
+    background: var(--bg1) !important;
+    color: #888 !important;
+}
+
+/* Remove white highlight on focused/selected option (Firefox and Chromium) */
+select:focus > option:checked,
+select option:checked,
+select option:focus,
+select option:hover {
+    background: #32244d !important;
+    color: #fff !important;
+}
+
+/* Remove default focus ring */
+select:focus {
+    outline: 2px solid #1976d2;
+}
+
+select option {
+    background: var(--bg1) !important;
+    color: #fff !important;
+}
+
+/* Hide number input spinners for all number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+    background-color: var(--bg1);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+}
+
+/* Ensure Select Product, Select Shop, and Payment Method dropdowns have the custom arrow */
+#accountProduct,
+#accountShop,
+#accountPayment {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 18px 18px !important;
+    padding-right: 34px !important;
+}
+
+/* Calendar icon with white circular background (works in Chromium browsers) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0) brightness(1.8);
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    box-sizing: content-box;
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* For Firefox (limited support, but try for consistency) */
+input[type="date"]::-moz-calendar-picker-indicator {
+    filter: invert(0) brightness(1.8);
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    box-sizing: content-box;
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Date picker popup dark mode (Chromium only) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-input-placeholder {
+    color-scheme: light;
+}
+
+/* Force dark mode for date picker popup in Chromium browsers (Opera, Chrome, Edge) */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+/* Futuristic Navbar Styles */
+.futuristic-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 100;
+    background: rgba(20, 18, 34, 0.92);
+    box-shadow: 0 2px 24px #00eaff33, 0 1.5px 0 #232946;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 64px;
+    overflow: visible;
+    backdrop-filter: blur(8px) saturate(1.2);
+    border-bottom: 1.5px solid #232946;
+}
+
+.futuristic-navbar-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 64px;
+}
+
+.navbar-logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #00eaff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #00eaff99, 0 0 2px #fff;
+    user-select: none;
+    z-index: 2;
+    margin-left: 24px;
+}
+.navbar-logo span {
+    color: #ffe082;
+    margin-left: 2px;
+    text-shadow: 0 0 8px #ffe08299;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    z-index: 2;
+    justify-content: center;
+    align-items: center; /* revert to center */
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    height: 64px;
+}
+
+.navbar-links a {
+    color: #fff;
+    font-family: 'Rajdhani', Arial, sans-serif;
+    font-size: 1.08rem;
+    text-decoration: none;
+    letter-spacing: 1.2px;
+    line-height: 1.1;
+    padding: 8px 0; /* revert to original vertical padding */
+    transition: color 0.18s, text-shadow 0.18s;
+    position: relative;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+/* --- Animated Navbar Underline --- */
+.navbar-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 40px;
+    background: linear-gradient(90deg, #00eaff 0%, #ffe082 100%);
+    border-radius: 2px;
+    transition: transform 0.38s cubic-bezier(.68,-0.55,.27,1.55), width 0.32s cubic-bezier(.68,-0.55,.27,1.55);
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Remove the old underline effect from nav links */
+.navbar-links a::after {
+    display: none;
+}
+
+.navbar-links a:hover,
+.navbar-links a:focus,
+.navbar-links a.active {
+    color: #00eaff;
+    text-shadow: 0 0 8px #00eaff99;
+}
+.navbar-links a:hover::after,
+.navbar-links a:focus::after,
+.navbar-links a.active::after {
+    transform: scaleX(1);
+}
+
+.navbar-glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80vw;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, #00eaff33 0%, transparent 70%);
+    filter: blur(16px);
+    animation: navbarGlowAnim 4s linear infinite alternate;
+    opacity: 0.7;
+}
+@keyframes navbarGlowAnim {
+    0% { filter: blur(16px) brightness(1.1); opacity: 0.7; }
+    100% { filter: blur(24px) brightness(1.3); opacity: 1; }
+}
+
+/* Responsive: shrink font size if needed */
+@media (max-width: 900px) {
+    .futuristic-navbar-inner {
+        max-width: 98vw;
+    }
+    .navbar-links {
+        gap: 10px;
+    }
+    .navbar-logo {
+        font-size: 1.2rem;
+        margin-left: 8px;
+    }
+    .navbar-links a {
+        font-size: 0.98rem;
+    }
+}
+
+/* Add top padding to main content to avoid overlap */
+#mainContent {
+    padding-top: 72px;
+}
+
+/* Anchor scroll offset for navbar height */
+html {
+    scroll-padding-top: 80px;
+    scroll-behavior: smooth;
+}
+
+/* Remove previous placeholder hack for date input */
+input[type="date"]:empty:before,
+input[type="date"]:not(:focus):invalid:before {
+    content: none;
+}
+
+/* Hide the default placeholder text for date input (for browsers that support it) */
+input[type="date"]::placeholder {
+    color: transparent;
+}
+
+.date-format-note {
+    display: block;
+    margin-bottom: 18px;
+    color: #ededed;
+    font-size: 0.98em;
+    font-style: italic;
+    letter-spacing: 1px;
+    text-align: center;
+    opacity: 0.7;
+    width: 100%;
+}
+
+
+section.invis {
+    min-height: 16vh;
 }
