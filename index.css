@@ -192,7 +192,7 @@ input[type="number"] {
 
 #updateForm button {
     background: #388e3c;
-    color: #fff;
+    color: #fff; 
     border: none;
     padding: 8px 20px;
     border-radius: 12px;
@@ -450,4 +450,166 @@ input[type="number"] {
 .buyer-form select option:hover {
     background: var(--bg1) !important;
     color: #fff !important;
+}
+
+.calc-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.calc-form input[type="number"] {
+    width: 90px;
+    padding: 8px;
+    border-radius: 7px;
+    border: none;
+    font-size: 15px;
+    background-color: var(--bg1);
+    color: #fff;
+}
+
+.calc-form select {
+    padding: 8px 10px;
+    border-radius: 7px;
+    border: none;
+    font-size: 18px;
+    background-color: var(--bg1);
+    color: #fff;
+    outline: none;
+}
+
+.calc-form button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.calc-form button:hover {
+    background: #1565c0;
+}
+
+.calc-result {
+    min-width: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffe082;
+    margin-left: 10px;
+    text-align: left;
+}
+
+.real-calc {
+    max-width: 340px;
+    margin: 0 auto 16px auto;
+    background: var(--bg1);
+    border-radius: 24px;
+    box-shadow: 0 6px 32px 0 #00000040;
+    padding: 28px 18px 18px 18px;
+    border: 1.5px solid #28223a;
+}
+
+.calc-display {
+    background: #232946;
+    color: #ffe082;
+    font-size: 2.3rem;
+    border-radius: 14px;
+    padding: 20px 18px 14px 18px;
+    margin-bottom: 22px;
+    text-align: right;
+    min-height: 48px;
+    letter-spacing: 1.5px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px #00000030;
+}
+
+.calc-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 62px);
+    grid-template-rows: repeat(5, 56px);
+    gap: 14px;
+    justify-content: center;
+}
+
+.calc-btn {
+    background: #2a223a;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.35rem;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+    font-weight: 500;
+    box-shadow: 0 1px 4px #00000020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+    width: 56px;
+    height: 56px;
+    outline: none;
+}
+
+.calc-btn.op,
+.calc-btn#calcEquals {
+    background: linear-gradient(135deg, #1976d2 60%, #21cbf3 100%);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #1976d250;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
+}
+
+.calc-btn#calcEquals {
+    font-size: 1.5rem;
+    grid-column: span 1;
+}
+
+.calc-btn[data-value="0"] {
+    grid-column: span 2;
+    border-radius: 22px;
+    width: 100%;
+    transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
+}
+
+.calc-btn,
+.calc-btn#calcClear,
+.calc-btn#calcBackspace,
+.calc-btn#calcPercent {
+    transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.18s;
+}
+
+.calc-btn:hover {
+    background: #48307b;
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px #00000030;
+}
+
+/* Smooth transition for all interactive elements */
+button,
+input,
+select,
+.add-item-form input,
+.add-item-form button,
+.buyer-form input,
+.buyer-form select,
+.buyer-form button,
+.updateBtn,
+.priceBtn,
+#updateForm button,
+#pricingTable tbody tr,
+#stockTable tbody tr,
+#buyersTable tbody tr,
+.calc-btn {
+    /* transition: background 0.25s, color 0.25s, box-shadow 0.25s, border-color 0.25s, transform 0.18s; */
+    transition: all 0.25s ease-in-out;
 }

@@ -204,4 +204,102 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
     }
+
+    // Calculator logic
+    const calcForm = document.getElementById("calcForm");
+    if (calcForm) {
+        calcForm.onsubmit = function(e) {
+            e.preventDefault();
+            const num1 = parseFloat(document.getElementById("calcNum1").value);
+            const num2 = parseFloat(document.getElementById("calcNum2").value);
+            const op = document.getElementById("calcOp").value;
+            let result = "";
+            if (!isNaN(num1) && !isNaN(num2)) {
+                switch (op) {
+                    case "+": result = num1 + num2; break;
+                    case "-": result = num1 - num2; break;
+                    case "*": result = num1 * num2; break;
+                    case "/": result = num2 !== 0 ? num1 / num2 : "∞"; break;
+                }
+            }
+            document.getElementById("calcResult").textContent = result;
+        };
+    }
+
+    // Real calculator logic
+    let calcInput = "";
+    let calcResultDisplayed = false;
+    const calcDisplay = document.getElementById("calcDisplay");
+    const calcButtons = document.querySelectorAll(".calc-btn");
+
+    function updateCalcDisplay(val) {
+        calcDisplay.textContent = val || "0";
+    }
+
+    function getLastNumber(str) {
+        const match = str.match(/(-?\d*\.?\d*)$/);
+        return match ? match[1] : "";
+    }
+
+    function replaceLastNumber(str, newNum) {
+        return str.replace(/(-?\d*\.?\d*)$/, newNum);
+    }
+
+    calcButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const value = btn.dataset.value;
+            if (btn.id === "calcBackspace") {
+                if (calcResultDisplayed) {
+                    calcInput = "";
+                    calcResultDisplayed = false;
+                } else {
+                    calcInput = calcInput.slice(0, -1);
+                }
+                updateCalcDisplay(calcInput);
+            } else if (btn.id === "calcClear") {
+                calcInput = "";
+                updateCalcDisplay(calcInput);
+                calcResultDisplayed = false;
+            } else if (btn.id === "calcPercent") {
+                // Convert last number to percent
+                let lastNum = getLastNumber(calcInput);
+                if (lastNum && !isNaN(lastNum)) {
+                    lastNum = (parseFloat(lastNum) / 100).toString();
+                    calcInput = replaceLastNumber(calcInput, lastNum);
+                    updateCalcDisplay(calcInput);
+                }
+            } else if (btn.id === "calcEquals") {
+                try {
+                    if (/^[\d+\-*/.()% ]+$/.test(calcInput)) {
+                        // eslint-disable-next-line no-eval
+                        let result = eval(calcInput.replace(/÷/g, "/").replace(/×/g, "*"));
+                        if (result === Infinity || result === -Infinity) result = "∞";
+                        updateCalcDisplay(result);
+                        calcInput = result.toString();
+                        calcResultDisplayed = true;
+                    }
+                } catch {
+                    updateCalcDisplay("Err");
+                    calcInput = "";
+                    calcResultDisplayed = false;
+                }
+            } else if (!btn.hasAttribute("data-value")) {
+                // Do nothing for invisible/empty buttons
+                return;
+            } else {
+                if (calcResultDisplayed && !isNaN(value)) {
+                    calcInput = value;
+                } else {
+                    // Prevent multiple decimals in a number
+                    if (value === ".") {
+                        const lastNum = getLastNumber(calcInput);
+                        if (lastNum.includes(".")) return;
+                    }
+                    calcInput += value;
+                }
+                updateCalcDisplay(calcInput);
+                calcResultDisplayed = false;
+            }
+        });
+    });
 });
