@@ -1,11 +1,47 @@
-// Sample stock data
-let stock = [
-    { type: "57mm x 40mm", quantity: 120 },
-    { type: "80mm x 80mm", quantity: 75 },
-    { type: "76mm x 60mm", quantity: 50 }
-];
+// --- Firebase Setup ---
+const firebaseConfig = {
+  apiKey: "AIzaSyCWnkcqC7MoECJeGKxQZPpcNzQTw8xkAuw",
+  authDomain: "stock-updater-a13f7.firebaseapp.com",
+  databaseURL: "https://stock-updater-a13f7-default-rtdb.firebaseio.com",
+  projectId: "stock-updater-a13f7",
+  storageBucket: "stock-updater-a13f7.firebasestorage.app",
+  messagingSenderId: "578119428340",
+  appId: "1:578119428340:web:90d9cb6a98d3ee779396a1"
+};
 
-let prices = {}; // { type: price }
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let stock = [];
+let prices = {};
+let buyers = [];
+
+function fetchData() {
+    db.ref("stock").on("value", snapshot => {
+        stock = snapshot.val() || [];
+        renderTable();
+        renderPricingTable();
+        renderBillTypeOptions();
+    });
+    db.ref("prices").on("value", snapshot => {
+        prices = snapshot.val() || {};
+        renderPricingTable();
+    });
+    db.ref("buyers").on("value", snapshot => {
+        buyers = snapshot.val() || [];
+        renderBuyersTable();
+    });
+}
+
+function saveStock() {
+    db.ref("stock").set(stock);
+}
+function savePrices() {
+    db.ref("prices").set(prices);
+}
+function saveBuyers() {
+    db.ref("buyers").set(buyers);
+}
 
 function renderTable() {
     const tbody = document.querySelector("#stockTable tbody");
@@ -38,6 +74,32 @@ function renderPricingTable() {
     });
 }
 
+function renderBillTypeOptions() {
+    const select = document.getElementById("billTypeSelect");
+    if (!select) return;
+    select.innerHTML = '<option value="" disabled selected>Select Bill Roll Type</option>';
+    stock.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.type;
+        option.textContent = item.type;
+        select.appendChild(option);
+    });
+}
+
+function renderBuyersTable() {
+    const tbody = document.querySelector("#buyersTable tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    buyers.forEach(buyer => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${buyer.shopName}</td>
+            <td>${buyer.billType}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
 function openModal(idx) {
     document.getElementById("modal").style.display = "block";
     document.getElementById("mainContent").classList.add("blur");
@@ -67,8 +129,7 @@ function closeModal() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    renderTable();
-    renderPricingTable();
+    fetchData();
 
     document.querySelector("#stockTable").addEventListener("click", (e) => {
         if (e.target.classList.contains("updateBtn")) {
@@ -84,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const qty = parseInt(document.getElementById("updateQuantity").value, 10);
         if (!isNaN(qty) && qty >= 0) {
             stock[idx].quantity = qty;
-            renderTable();
+            saveStock();
             closeModal();
         }
     };
@@ -103,8 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const qty = parseInt(document.getElementById("newQuantity").value, 10);
         if (type && !isNaN(qty) && qty >= 0) {
             stock.push({ type, quantity: qty });
-            renderTable();
-            renderPricingTable();
+            saveStock();
             document.getElementById("addItemForm").reset();
         }
     };
@@ -124,9 +184,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const price = parseFloat(document.getElementById("updatePrice").value);
             if (!isNaN(price) && price >= 0) {
                 prices[type] = price;
+                savePrices();
                 closeModal();
-                renderPricingTable();
             }
         }
     });
+
+    // Buyers form
+    const buyerForm = document.getElementById("buyerForm");
+    if (buyerForm) {
+        buyerForm.onsubmit = function(e) {
+            e.preventDefault();
+            const shopName = document.getElementById("shopName").value.trim();
+            const billType = document.getElementById("billTypeSelect").value;
+            if (shopName && billType) {
+                buyers.push({ shopName, billType });
+                saveBuyers();
+                buyerForm.reset();
+            }
+        };
+    }
 });

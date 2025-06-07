@@ -316,3 +316,138 @@ input[type="number"] {
     background: #2e7031;
     transform: scale(1.08);
 }
+
+.buyer-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+.buyer-form input[type="text"],
+.buyer-form select {
+    padding: 8px;
+    border-radius: 7px;
+    border: none;
+    font-size: 15px;
+    background-color: var(--bg1);
+    color: #fff;
+}
+
+.buyer-form select {
+    background-color: var(--bg1);
+    color: #fff;
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 28px;
+    padding-left: 10px;
+    min-width: 180px;
+    height: 38px;
+    position: relative;
+    z-index: 1;
+    font-size: 15px;
+    /* Prevent text from being cut off */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* Custom arrow for select (optional, for better look) */
+.buyer-form select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' fill='white' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 18px 18px;
+}
+
+/* Dropdown options styling for Chrome, Edge, Safari */
+.buyer-form select option {
+    background: var(--bg1);
+    color: #fff;
+}
+
+/* Remove white highlight on focused/selected option (Firefox and Chromium) */
+.buyer-form select:focus > option:checked,
+.buyer-form select option:checked,
+.buyer-form select option:focus,
+.buyer-form select option:hover {
+    background: #32244d !important;
+    color: #fff !important;
+}
+
+/* Remove default focus ring */
+.buyer-form select:focus {
+    outline: 2px solid #1976d2;
+}
+
+.buyer-form button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.buyer-form button:hover {
+    background: #1565c0;
+}
+
+#buyersTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #241a3ab1;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    margin-top: 12px;
+}
+
+#buyersTable th,
+#buyersTable td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid #3a2d53;
+    font-size: 16px;
+}
+
+#buyersTable th {
+    background: #241a3a;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #3a2d53;
+}
+
+#buyersTable tr:last-child td {
+    border-bottom: none;
+}
+
+#buyersTable tbody tr {
+    transition: background 0.2s;
+}
+
+#buyersTable tbody tr:hover {
+    background: #32244d;
+}
+
+/* Hide the placeholder option after selection */
+.buyer-form select option[disabled][selected] {
+    display: none;
+}
+
+/* Force all options to have dark background, even on first open */
+.buyer-form select option,
+.buyer-form select option:checked,
+.buyer-form select option:focus,
+.buyer-form select option:hover {
+    background: var(--bg1) !important;
+    color: #fff !important;
+}

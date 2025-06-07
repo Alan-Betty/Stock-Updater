@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="index.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
     <div id="mainContent">
@@ -45,6 +47,30 @@
                 </thead>
                 <tbody>
                     <!-- Pricing rows will be inserted here by JS -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h1>Buyers Info</h1>
+            <form id="buyerForm" class="buyer-form">
+                <input type="text" id="shopName" placeholder="Shop Name" required>
+                <select id="billTypeSelect" required>
+                    <option value="" disabled selected>Select Bill Roll Type</option>
+                    <!-- Options will be populated by JS -->
+                </select>
+                <button type="submit">Add Buyer</button>
+            </form>
+            <table id="buyersTable">
+                <thead>
+                    <tr>
+                        <th>Shop Name</th>
+                        <th>Bill Roll Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Buyer rows will be inserted here by JS -->
                 </tbody>
             </table>
         </div>
