@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const rect = link.getBoundingClientRect();
         const parentRect = link.parentElement.parentElement.getBoundingClientRect();
         underline.style.width = rect.width + "px";
-        underline.style.transform = `translateX(${rect.left - parentRect.left}px)`;
+        underline.style.transform = `translateX(${rect.left - parentRect.left}px)`; // always use transform
     }
 
     function setActiveNav() {
@@ -432,10 +432,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Also set active on click for instant feedback
     navLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            navLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            moveUnderlineTo(this);
+        link.addEventListener('click', function (e) {
+            // Smooth scroll to section with offset for navbar
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                moveUnderlineTo(this);
+
+                // Offset scroll by navbar height (e.g. 80px)
+                const navbarHeight = document.querySelector('.futuristic-navbar').offsetHeight || 80;
+                const sectionTop = targetSection.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: sectionTop - navbarHeight + 8, // +8 for a little gap
+                    behavior: 'smooth'
+                });
+            } else {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                moveUnderlineTo(this);
+            }
+        });
+    });
+
+    // After navLinks logic, add for drawer links:
+    const drawerLinks = document.querySelectorAll('.navbar-drawer a');
+
+    drawerLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            // Smooth scroll to section with offset for navbar
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                e.preventDefault();
+                drawerLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                // Move underline in drawer
+                const drawerUnderline = drawer.querySelector('.navbar-underline');
+                if (drawerUnderline) {
+                    const rect = this.getBoundingClientRect();
+                    const parentRect = drawer.querySelector('ul').getBoundingClientRect();
+                    drawerUnderline.style.width = rect.width + "px";
+                    drawerUnderline.style.transform = `translateY(${rect.top - parentRect.top + rect.height}px) translateX(${rect.left - parentRect.left}px)`;
+                }
+                // Scroll to section with offset
+                const navbarHeight = document.querySelector('.futuristic-navbar').offsetHeight || 80;
+                const sectionTop = targetSection.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: sectionTop - navbarHeight + 8,
+                    behavior: 'smooth'
+                });
+                // Hide the drawer after click
+                navbar.classList.remove('open');
+                isDrawerOpen = false;
+                document.body.style.overflow = '';
+            }
         });
     });
 
@@ -444,4 +497,58 @@ document.addEventListener("DOMContentLoaded", () => {
         const active = document.querySelector('.navbar-links a.active');
         if (active) moveUnderlineTo(active);
     });
+
+    // Move these up so they're always defined before use
+    const hamburger = document.getElementById('navbarHamburger');
+    const drawer = document.getElementById('navbarDrawer');
+    const navbar = document.querySelector('.futuristic-navbar');
+    const drawerClose = document.getElementById('navbarDrawerClose');
+    let isDrawerOpen = false;
+
+    // Hamburger menu logic
+    if (hamburger) {
+        hamburger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            isDrawerOpen = !navbar.classList.contains('open');
+            if (isDrawerOpen) {
+                navbar.classList.add('open');
+                const activeDrawer = drawer.querySelector('a.active') || drawer.querySelector('a');
+                if (activeDrawer) {
+                    // Move underline in drawer if needed
+                    const drawerUnderline = drawer.querySelector('.navbar-underline');
+                    if (drawerUnderline) {
+                        const rect = activeDrawer.getBoundingClientRect();
+                        const parentRect = drawer.querySelector('ul').getBoundingClientRect();
+                        drawerUnderline.style.width = rect.width + "px";
+                        drawerUnderline.style.transform = `translateY(${rect.top - parentRect.top + rect.height}px) translateX(${rect.left - parentRect.left}px)`;
+                    }
+                }
+                document.body.style.overflow = 'hidden';
+            } else {
+                navbar.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    // Drawer close button logic
+    if (drawerClose) {
+        drawerClose.addEventListener('click', function (e) {
+            e.stopPropagation();
+            navbar.classList.remove('open');
+            isDrawerOpen = false;
+            document.body.style.overflow = '';
+        });
+    }
+    // Close drawer when clicking outside
+    document.addEventListener('click', function (e) {
+        if (isDrawerOpen && !drawer.contains(e.target) && !hamburger.contains(e.target)) {
+            navbar.classList.remove('open');
+            isDrawerOpen = false;
+            document.body.style.overflow = '';
+        }
+    });
+    // Prevent scroll on touch devices when drawer is open
+    drawer && drawer.addEventListener('touchmove', function(e) {
+        if (navbar.classList.contains('open')) e.stopPropagation();
+    }, { passive: false });
 });

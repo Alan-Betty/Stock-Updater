@@ -12,15 +12,29 @@
     <!-- Futuristic Navbar -->
     <nav class="futuristic-navbar">
         <div class="futuristic-navbar-inner">
-            <div class="navbar-logo">🧾 Stock<span>Flow</span></div>
+            <div class="navbar-logo">Stock<span>Flow</span></div>
+            <button class="navbar-hamburger" id="navbarHamburger" aria-label="Open navigation">
+                <span></span>
+            </button>
             <ul class="navbar-links">
                 <li><a href="#stock">Stock</a></li>
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#buyers">Buyers</a></li>
                 <li><a href="#accounts">Accounts</a></li>
                 <li><a href="#calculator">Calculator</a></li>
+                <div class="navbar-underline"></div>
             </ul>
-            <div class="navbar-underline"></div>
+            <div class="navbar-drawer" id="navbarDrawer">
+                <button class="navbar-drawer-close" id="navbarDrawerClose" aria-label="Close navigation">&times;</button>
+                <ul>
+                    <li><a href="#stock">Stock</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#buyers">Buyers</a></li>
+                    <li><a href="#accounts">Accounts</a></li>
+                    <li><a href="#calculator">Calculator</a></li>
+                </ul>
+                <div class="navbar-underline"></div>
+            </div>
             <div class="navbar-glow"></div>
         </div>
     </nav>
@@ -31,8 +45,10 @@
         <h1>Bill Roll Stock</h1>
         <!-- Add Item Form -->
         <form id="addItemForm" class="add-item-form">
-            <input type="text" id="newType" placeholder="Type (e.g. 80mm x 80mm)" required>
-            <input type="number" id="newQuantity" placeholder="Quantity" min="0" required>
+            <div class="input-row-mobile">
+                <input type="text" id="newType" placeholder="Type (e.g. 80mm x 80mm)" required>
+                <input type="number" id="newQuantity" placeholder="Quantity" min="0" required>
+            </div>
             <button type="submit">Add Item</button>
         </form>
         <table id="stockTable">
@@ -70,11 +86,13 @@
         <div class="container">
             <h1>Buyers Info</h1>
             <form id="buyerForm" class="buyer-form">
-                <input type="text" id="shopName" placeholder="Shop Name" required>
-                <select id="billTypeSelect" required>
-                    <option value="" disabled selected>Select Bill Roll Type</option>
-                    <!-- Options will be populated by JS -->
-                </select>
+                <div class="input-row-mobile">
+                    <input type="text" id="shopName" placeholder="Shop Name" required>
+                    <select id="billTypeSelect" required>
+                        <option value="" disabled selected>Select Bill Roll Type</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
+                </div>
                 <button type="submit">Add Buyer</button>
             </form>
             <table id="buyersTable">
@@ -94,22 +112,28 @@
         <div class="container">
             <h1>Accounts</h1>
             <form id="accountForm" class="account-form">
-                <select id="accountShop" required>
-                    <option value="" disabled selected>Select Shop</option>
-                    <!-- Populated by JS -->
-                </select>
-                <select id="accountProduct" required>
-                    <option value="" disabled selected>Select Product</option>
-                    <!-- Populated by JS -->
-                </select>
-                <select id="accountPayment" required>
-                    <option value="" disabled selected>Payment Method</option>
-                    <option value="Cash">Cash</option>
-                    <option value="GPay">GPay</option>
-                </select>
-                <input type="number" id="accountQty" placeholder="Quantity" min="1" required>
-                <input type="number" id="accountAmount" placeholder="Amount Earned" min="0" required>
-                <input type="date" id="accountDate" required placeholder="dd/mm/yyyy">
+                <div class="input-row-mobile">
+                    <select id="accountShop" required>
+                        <option value="" disabled selected>Select Shop</option>
+                        <!-- Populated by JS -->
+                    </select>
+                    <select id="accountProduct" required>
+                        <option value="" disabled selected>Select Product</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="input-row-mobile">
+                    <select id="accountPayment" required>
+                        <option value="" disabled selected>Payment Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="GPay">GPay</option>
+                    </select>
+                    <input type="number" id="accountQty" placeholder="Quantity" min="1" required>
+                </div>
+                <div class="input-row-mobile">
+                    <input type="number" id="accountAmount" placeholder="Amount Earned" min="0" required>
+                    <input type="date" id="accountDate" required placeholder="dd/mm/yyyy">
+                </div>
                 <button type="submit">Add Entry</button>
             </form>
             <span class="date-format-note">Note: Format is MM/DD/YYYY</span>
@@ -147,6 +171,8 @@
             </div>
         </div>
     </section>
+    <!-- Add spacer for scroll room -->
+    <div style="height: 205px;"></div>
     <section class="invis"></section>
 
     </div>

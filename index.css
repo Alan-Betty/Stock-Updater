@@ -888,13 +888,13 @@ input[type="date"] {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Center the navbar content */
     position: relative;
     height: 64px;
 }
 
 .navbar-logo {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     height: 64px;
@@ -908,7 +908,10 @@ input[type="date"] {
     text-shadow: 0 0 8px #00eaff99, 0 0 2px #fff;
     user-select: none;
     z-index: 2;
-    margin-left: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: center;
+    flex: 1 1 0%;
 }
 .navbar-logo span {
     color: #ffbf00;
@@ -916,6 +919,7 @@ input[type="date"] {
     text-shadow: 0 0 8px #ffe08299;
 }
 
+/* Ensure navbar-links is positioned for underline */
 .navbar-links {
     display: flex;
     gap: 22px;
@@ -924,11 +928,25 @@ input[type="date"] {
     padding: 0;
     z-index: 2;
     justify-content: center;
-    align-items: center; /* revert to center */
+    align-items: center;
     flex: 1;
     min-width: 0;
     position: relative;
     height: 64px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.navbar-links .navbar-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 40px;
+    background: linear-gradient(90deg, #00eaff 0%, #ffae00 100%);
+    border-radius: 2px;
+    transition: transform 0.38s cubic-bezier(.68,-0.55,.27,1.55), width 0.32s cubic-bezier(.68,-0.55,.27,1.55);
+    z-index: 10;
+    pointer-events: none;
 }
 
 .navbar-links a {
@@ -945,6 +963,14 @@ input[type="date"] {
     white-space: nowrap;
 }
 
+.navbar-links a.active,
+.navbar-links a:hover,
+.navbar-links a:focus {
+    color: #00eaff !important;
+    text-shadow: 0 0 8px #00eaff99;
+    font-weight: bold;
+}
+
 /* --- Animated Navbar Underline --- */
 .navbar-underline {
     position: absolute;
@@ -957,6 +983,11 @@ input[type="date"] {
     transition: transform 0.38s cubic-bezier(.68,-0.55,.27,1.55), width 0.32s cubic-bezier(.68,-0.55,.27,1.55);
     z-index: 3;
     pointer-events: none;
+}
+
+/* Prevent navbar from covering section content when scrolling */
+section {
+    scroll-margin-top: 80px; /* Adjust as needed for your navbar height + gap */
 }
 
 /* Remove the old underline effect from nav links */
@@ -995,58 +1026,365 @@ input[type="date"] {
     100% { filter: blur(24px) brightness(1.3); opacity: 1; }
 }
 
-/* Responsive: shrink font size if needed */
-@media (max-width: 900px) {
-    .futuristic-navbar-inner {
-        max-width: 98vw;
-    }
-    .navbar-links {
-        gap: 10px;
-    }
-    .navbar-logo {
-        font-size: 1.2rem;
-        margin-left: 8px;
-    }
-    .navbar-links a {
-        font-size: 0.98rem;
-    }
+/* Hamburger styles */
+.navbar-hamburger {
+    display: none;
+    position: absolute;
+    right: 24px;
+    top: 16px;
+    width: 38px;
+    height: 38px;
+    z-index: 20;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Add top padding to main content to avoid overlap */
-#mainContent {
-    padding-top: 72px;
+.navbar-hamburger span,
+.navbar-hamburger span::before,
+.navbar-hamburger span::after {
+    display: block;
+    background: #fff;
+    height: 4px;
+    width: 28px;
+    border-radius: 2px;
+    position: absolute;
+    transition: all 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+    content: '';
 }
 
-/* Anchor scroll offset for navbar height */
-html {
-    scroll-padding-top: 80px;
-    scroll-behavior: smooth;
+.navbar-hamburger span {
+    position: relative;
+    top: 0;
+    left: 0;
 }
 
-/* Remove previous placeholder hack for date input */
-input[type="date"]:empty:before,
-input[type="date"]:not(:focus):invalid:before {
-    content: none;
+.navbar-hamburger span::before {
+    content: '';
+    top: -10px;
+    left: 0;
+    position: absolute;
 }
 
-/* Hide the default placeholder text for date input (for browsers that support it) */
-input[type="date"]::placeholder {
-    color: transparent;
+.navbar-hamburger span::after {
+    content: '';
+    top: 10px;
+    left: 0;
+    position: absolute;
+}
+
+/* Hamburger open animation */
+.futuristic-navbar.open .navbar-hamburger span {
+    background: transparent;
+}
+.futuristic-navbar.open .navbar-hamburger span::before {
+    transform: translateY(10px) rotate(45deg);
+}
+.futuristic-navbar.open .navbar-hamburger span::after {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Hamburger close button for drawer */
+.navbar-drawer-close {
+    display: block; /* was 'none', now always visible */
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    width: 38px;
+    height: 38px;
+    background: none;
+    border: none;
+    color: #fff !important; /* force white color */
+    font-size: 2.2rem;
+    z-index: 210;
+    cursor: pointer;
+    transition: color 0.18s;
+}
+.navbar-drawer-close:hover {
+    color: #00eaff;
+}
+
+/* Responsive Navbar Drawer */
+.navbar-drawer {
+    display: none;
+}
+
+#accountDate {
+    color: #ffffff65;
 }
 
 .date-format-note {
-    display: block;
-    margin-bottom: 18px;
-    color: #ededed;
-    font-size: 0.98em;
-    font-style: italic;
-    letter-spacing: 1px;
+    color: #ffffff80;
     text-align: center;
-    opacity: 0.7;
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 
-section.invis {
-    min-height: 21.5vh;
+@media (max-width: 900px) {
+    .futuristic-navbar-inner {
+        max-width: 100vw;
+        padding: 0 0 0 0;
+        /* Remove justify-content: center; to avoid centering all content in mobile */
+        justify-content: flex-start;
+    }
+    .navbar-logo {
+        font-size: 2rem;
+        margin-left: 0;
+        margin-right: 0;
+        flex: 1 1 0%;
+        justify-content: center;
+        display: flex;
+    }
+    .navbar-hamburger {
+        display: flex;
+        width: 38px;
+        height: 38px;
+        right: 14px;
+        top: 18px;
+    }
+    .navbar-hamburger span,
+    .navbar-hamburger span::before,
+    .navbar-hamburger span::after {
+        width: 28px;
+        height: 4px;
+    }
+    .navbar-hamburger span::before {
+        top: -10px;
+    }
+    .navbar-hamburger span::after {
+        top: 10px;
+    }
+    .navbar-links {
+        display: none;
+    }
+    .navbar-underline {
+        display: none;
+    }
+    .navbar-drawer {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(20, 18, 34, 0.98);
+        z-index: 200;
+        box-shadow: -2px 0 24px #00eaff33;
+        transition: right 0.38s cubic-bezier(.68,-0.55,.27,1.55);
+        /* Center items vertically in drawer only */
+        align-items: center;
+        justify-content: center;
+        padding-top: 0;
+    }
+    /* Show the drawer when navbar is open */
+    .futuristic-navbar.open .navbar-drawer {
+        right: 0;
+    }
+    .navbar-drawer ul {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        width: 100%;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .navbar-drawer a {
+        color: #fff;
+        font-family: 'Rajdhani', Arial, sans-serif;
+        font-size: 1.3rem;
+        text-decoration: none;
+        letter-spacing: 1.2px;
+        padding: 12px 0;
+        width: 100vw;
+        text-align: center;
+        display: block;
+        position: relative;
+        transition: color 0.18s, text-shadow 0.18s;
+    }
+    .navbar-drawer .navbar-underline {
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #00eaff 0%, #ffae00 100%);
+        border-radius: 2px;
+        transition: transform 0.38s cubic-bezier(.68,-0.55,.27,1.55), width 0.32s cubic-bezier(.68,-0.55,.27,1.55);
+        z-index: 3;
+        pointer-events: none;
+    }
+    .navbar-drawer a.active,
+    .navbar-drawer a:hover,
+    .navbar-drawer a:focus {
+        color: #00eaff !important;
+        text-shadow: 0 0 8px #00eaff99;
+        font-weight: bold;
+    }
+}
+
+/* Responsive layout for containers and forms */
+@media (max-width: 900px) {
+    .container {
+        max-width: 98vw;
+        padding: 16px 6vw;
+    }
+    .add-item-form,
+    .buyer-form,
+    .account-form {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    /* Only stack, don't force full width */
+    .add-item-form input,
+    .buyer-form input,
+    .buyer-form select,
+    .add-item-form button,
+    .buyer-form button,
+    .account-form select,
+    .account-form input,
+    .account-form button {
+        width: auto;
+        min-width: 120px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    table,
+    #pricingTable,
+    #buyersTable {
+        font-size: 0.98em;
+    }
+    th, td {
+        padding: 10px 6px;
+        font-size: 0.98em;
+    }
+    .accounts-list {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .account-card {
+        min-width: 0;
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px 2vw;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+    .navbar-logo {
+        font-size: 1.8rem;
+        margin-left: 0;
+        margin-right: 0;
+        flex: 1 1 0%;
+        justify-content: center;
+        display: flex;
+    }
+    .navbar-hamburger {
+        width: 32px;
+        height: 32px;
+        right: 8px;
+        top: 18px;
+    }
+    .navbar-hamburger span,
+    .navbar-hamburger span::before,
+    .navbar-hamburger span::after {
+        width: 22px;
+        height: 3.5px;
+    }
+    .navbar-hamburger span::before {
+        top: -7px;
+    }
+    .navbar-hamburger span::after {
+        top: 7px;
+    }
+    .real-calc {
+        padding: 10px 2vw 8px 2vw;
+    }
+}
+
+/* On mobile, inputs in .add-item-form and .buyer-form in the same row, button below and centered */
+@media (max-width: 700px) {
+    .add-item-form,
+    .buyer-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: stretch;
+        width: 100%;
+    }
+    .add-item-form .input-row-mobile,
+    .buyer-form .input-row-mobile {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+    }
+    .add-item-form .input-row-mobile input[type="text"],
+    .add-item-form .input-row-mobile input[type="number"] {
+        width: 50%;
+        min-width: 0;
+        box-sizing: border-box;
+        margin-bottom: 0;
+    }
+    .buyer-form .input-row-mobile input[type="text"],
+    .buyer-form .input-row-mobile select {
+        width: 50%;
+        min-width: 0;
+        box-sizing: border-box;
+        margin-bottom: 0;
+    }
+    .add-item-form button,
+    .buyer-form button {
+        width: auto;
+        min-width: 100px;
+        margin: 14px auto 0 auto;
+        align-self: center;
+        display: block;
+    }
+
+    .account-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: stretch;
+        width: 100%;
+    }
+    .account-form .input-row-mobile {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+    }
+    .account-form .input-row-mobile select,
+    .account-form .input-row-mobile input[type="number"],
+    .account-form .input-row-mobile input[type="date"] {
+        width: 50%;
+        min-width: 0;
+        box-sizing: border-box;
+        margin-bottom: 5px;
+    }
+    .account-form button {
+        width: auto;
+        min-width: 100px;
+        margin: 14px auto 0 auto;
+        align-self: center;
+        display: block;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
 }
